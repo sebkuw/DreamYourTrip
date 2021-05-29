@@ -7,14 +7,22 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.dreamyourtrip.R;
 import com.example.dreamyourtrip.fragments.AddPointDialogFragment;
@@ -30,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -41,6 +50,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -60,24 +70,24 @@ public class MapsActivity extends AppCompatActivity implements
         GoogleMap.OnMapLongClickListener,
         View.OnClickListener,
         GoogleMap.OnMarkerClickListener,
-        TaskLoadedCallback {
+        TaskLoadedCallback,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private static final int REQUEST_TRIPS_ACTIVITY = 2;
-
-    private final int REQUEST_POINTS_ACTIVITY = 100;
 
     private GoogleMap mMap;
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private ImageButton imgBtnCurrentPosition, imgBtnSavePoint, imgBtnAddToTrip;
 
     private FusedLocationProviderClient fusedLocationClient;
-
-    private AutocompleteSupportFragment autocompleteFragment;
 
     private double longitude, latitude;
     private String markerTitle;
@@ -92,37 +102,30 @@ public class MapsActivity extends AppCompatActivity implements
         requestLocationPermission();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        initMapAndPlaces();
+        initMap();
+        initPlaces();
         initViews();
+        initMenu();
         initDB();
     }
 
-    private void initViews() {
-        imgBtnCurrentPosition = findViewById(R.id.img_btn_current_position);
-        imgBtnSavePoint = findViewById(R.id.img_btn_save_point);
-        imgBtnAddToTrip = findViewById(R.id.img_btn_add_to_trip);
-
-        imgBtnCurrentPosition.setOnClickListener(this);
-        imgBtnSavePoint.setOnClickListener(this);
-        imgBtnAddToTrip.setOnClickListener(this);
-    }
-
-    private void initMapAndPlaces() {
-        /*SupportMapFragment mapFragment = (SupportMapFragment)
+    private void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-*/
+    }
 
+    private void initPlaces() {
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), String.valueOf(R.string.google_api_key));
+            Places.initialize(getApplicationContext(), this.getString(R.string.google_maps_api_key));
         }
 
-        autocompleteFragment = (AutocompleteSupportFragment)
+        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG));
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG));
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 latitude = place.getLatLng().latitude;
@@ -141,89 +144,131 @@ public class MapsActivity extends AppCompatActivity implements
         });
     }
 
+    private void initViews() {
+        imgBtnCurrentPosition = findViewById(R.id.img_btn_current_position);
+        imgBtnSavePoint = findViewById(R.id.img_btn_save_point);
+        imgBtnAddToTrip = findViewById(R.id.img_btn_add_to_trip);
+
+        imgBtnCurrentPosition.setOnClickListener(this);
+        imgBtnSavePoint.setOnClickListener(this);
+        imgBtnAddToTrip.setOnClickListener(this);
+    }
+
+    private void initMenu() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.dl_activity_maps);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
     private void initDB() {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
     }
-/*
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawer((GravityCompat.START));
+        else
+            super.onBackPressed();
     }
 
+    ActivityResultLauncher<Intent> pointsActivityStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        ArrayList<Point> pointsChecked = intent.getParcelableArrayListExtra("pointsList");
+
+                        if (pointsChecked.size() > 0) {
+                            mMap.clear();
+                            for (Point p : pointsChecked) {
+                                LatLng latLng = new LatLng(p.getLatitude(), p.getLongitude());
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .draggable(true)
+                                        .title(p.getName()));
+                            }
+                        }
+                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> tripsActivityStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        mMap.clear();
+                        Trip t = intent.getParcelableExtra("trip");
+
+                        ArrayList<TripStop> sourcePoints = t.getTripStops();
+                        Log.i("CHECK", sourcePoints.toString());
+
+                        String directionMode;
+                        if ("BY BIKE".equals(t.getTransportType())) {
+                            directionMode = "cycling";
+                        } else if ("ON FOOT".equals(t.getTransportType())) {
+                            directionMode = "walking";
+                        } else {
+                            directionMode = "driving";
+                        }
+
+                        for (int i = 0; i < sourcePoints.size(); i++) {
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(sourcePoints.get(i).getLatitude(), sourcePoints.get(i).getLongitude()))
+                                    .draggable(true))
+                                    .setTitle(sourcePoints.get(i).getName());
+
+                            if (i != sourcePoints.size() - 1) {
+                                new FetchURL(MapsActivity.this)
+                                        .execute(getUrl(
+                                                new LatLng(sourcePoints.get(i).getLatitude(), sourcePoints.get(i).getLongitude()),
+                                                new LatLng(sourcePoints.get(i + 1).getLatitude(), sourcePoints.get(i + 1).getLongitude()),
+                                                directionMode), directionMode);
+                            } else {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(sourcePoints.get(0).getLatitude(), sourcePoints.get(0).getLongitude())));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                            }
+                        }
+                    }
+                }
+            });
+
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case (R.id.mi_points):
-                startActivityForResult(new Intent(MapsActivity.this, PointsActivity.class), REQUEST_POINTS_ACTIVITY);
-                return true;
-            case (R.id.mi_routes):
-                startActivityForResult(new Intent(MapsActivity.this, TripsActivity.class), REQUEST_TRIPS_ACTIVITY);
-                return true;
-            case (R.id.mi_sign_out):
+            case (R.id.nav_map):
+                drawerLayout.closeDrawer((GravityCompat.START));
+                break;
+            case (R.id.nav_points):
+                pointsActivityStartForResult.launch(new Intent(this, PointsActivity.class));
+                drawerLayout.closeDrawer((GravityCompat.START));
+                break;
+            case (R.id.nav_trips):
+                tripsActivityStartForResult.launch(new Intent(this, PointsActivity.class));
+                drawerLayout.closeDrawer((GravityCompat.START));
+                break;
+            case (R.id.nav_sign_out):
                 mAuth.signOut();
                 finish();
-                return true;
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                return true;
         }
-    }*/
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_POINTS_ACTIVITY && resultCode == Activity.RESULT_OK) {
-            ArrayList<Point> pointsChecked = data.getParcelableArrayListExtra("pointsList");
-
-            if (pointsChecked.size() > 0) {
-                mMap.clear();
-                for (Point p : pointsChecked) {
-                    LatLng latLng = new LatLng(p.getLatitude(), p.getLongitude());
-                    mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .draggable(true)
-                            .title(p.getName()));
-                }
-            }
-        }
-
-        if (requestCode == REQUEST_TRIPS_ACTIVITY && resultCode == Activity.RESULT_OK) {
-            mMap.clear();
-            Trip t = data.getParcelableExtra("trip");
-
-            ArrayList<TripStop> sourcePoints = t.getTripStops();
-            Log.i("CHECK", sourcePoints.toString());
-
-            String directionMode;
-            if ("BY BIKE".equals(t.getTransportType())) {
-                directionMode = "cycling";
-            } else if ("ON FOOT".equals(t.getTransportType())) {
-                directionMode = "walking";
-            } else {
-                directionMode = "driving";
-            }
-
-            for (int i = 0; i < sourcePoints.size(); i++) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(sourcePoints.get(i).getLatitude(), sourcePoints.get(i).getLongitude()))
-                        .draggable(true))
-                        .setTitle(sourcePoints.get(i).getName());
-
-                if (i != sourcePoints.size() - 1) {
-                    new FetchURL(MapsActivity.this)
-                            .execute(getUrl(
-                                    new LatLng(sourcePoints.get(i).getLatitude(), sourcePoints.get(i).getLongitude()),
-                                    new LatLng(sourcePoints.get(i+1).getLatitude(), sourcePoints.get(i+1).getLongitude()),
-                                    directionMode), directionMode);
-                } else {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(sourcePoints.get(0).getLatitude(), sourcePoints.get(0).getLongitude())));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-                }
-            }
-        }
+        return true;
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
@@ -272,25 +317,19 @@ public class MapsActivity extends AppCompatActivity implements
 
     private void moveMap() {
         mMap.clear();
-
         LatLng latLng = new LatLng(latitude, longitude);
-
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .draggable(true)
                 .title(markerTitle));
-
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     @Override
     public void onMapLongClick(LatLng latLng) {
         mMap.clear();
-
         markerTitle = "";
-
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .draggable(true));
