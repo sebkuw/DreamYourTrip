@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MapsActivity">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_for_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        card_view:cardCornerRadius="4dp">
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
+
+
+    <LinearLayout
+        android:id="@+id/ll_for_buttons"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_0"
+        android:layout_marginEnd="@dimen/dp_0"
+        android:layout_marginBottom="@dimen/dp_0"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/img_btn_current_position"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_margin="@dimen/dp_15"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_current_position" />
+
+        <ImageButton
+            android:id="@+id/img_btn_save_point"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_margin="@dimen/dp_15"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_save" />
+
+        <ImageButton
+            android:id="@+id/img_btn_add_to_trip"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_margin="@dimen/dp_15"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

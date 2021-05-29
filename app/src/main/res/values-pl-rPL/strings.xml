@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dream Your Trip</string>
+
+    <string name="username_email">Nazwa użytkownika/Email</string>
+    <string name="password">Hasło</string>
+    <string name="login">Zaloguj</string>
+    <string name="register">Zarejestruj</string>
+    <string name="noUsername">Wprowadź nazwę użytkownika!</string>
+    <string name="noPassword">Wprowadź hasło!</string>
+    <string name="auth_failed">Logowanie zakończone niepowodzeniem, spróbuj jeszcze raz!</string>
+    <string name="email_send">Email weryfikacyjny został wysłany. Sprawdź swoją pocztę.</string>
+    <string name="email_verify">Twój email nie jest zweryfikowany. Zrób to przez kliknięcie przycisku weryfikacji!</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="sign_out">Wyloguj</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="point_name">Nazwa punktu</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="back">Powrót</string>
+    <string name="update">Aktualizuj</string>
+    <string name="email">Email</string>
+    <string name="points">Punkty</string>
+    <string name="trips">Wycieczki</string>
+    <string name="title_location_permission">Pozwolenie na udostępnianie lokalizacji</string>
+    <string name="text_location_permission">Czy zezwalasz na dostęp do lokalizacji urządzenia?</string>
+    <string name="ok">OK</string>
+    <string name="show_on_map">Pokaż</string>
+    <string name="delete">Usuń</string>
+    <string name="new_trip">Nowa wycieczka</string>
+    <string name="trip_name">Nazwa wycieczki</string>
+    <string name="description">Opis</string>
+    <string name="money_for_trip">Budżet</string>
+    <string name="trip_stop_name">Nazwa postoju</string>
+    <string name="add">Dodaj</string>
+    <string name="money_for_trip_stop">Wydatki</string>
+
+    <string name="choose_points">Najpierw wybierz jakiś punkt!</string>
+</resources>

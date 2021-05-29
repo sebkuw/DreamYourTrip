@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_15"
+    tools:context=".fragments.AddTripDialogFragment">
+
+    <EditText
+        android:id="@+id/et_trip_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/trip_name"
+        android:textSize="@dimen/text_24" />
+
+    <Spinner
+        android:id="@+id/spinner_transport_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15" />
+
+    <EditText
+        android:id="@+id/et_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:gravity="top|left"
+        android:hint="@string/description"
+        android:maxLines="10"
+        android:minLines="8"
+        android:scrollbars="vertical"
+        android:textSize="@dimen/text_24" />
+
+    <EditText
+        android:id="@+id/et_actual_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:hint="@string/money_for_trip"
+        android:inputType="numberDecimal"
+        android:textSize="@dimen/text_24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_save_trip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp_15"
+            android:layout_weight="1"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/btn_cancel_trip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp_15"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout>

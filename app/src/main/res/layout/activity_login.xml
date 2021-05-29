@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp_15"
+    tools:context=".activities.LoginActivity">
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_100"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/text_24"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_100"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_email"
+        android:textSize="@dimen/text_24"
+         />
+
+    <ImageButton
+        android:id="@+id/img_btn_show_password"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_30"
+        android:background="@drawable/ic_show_password"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBottom_toBottomOf="@+id/et_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_password"
+        app:layout_constraintTop_toTopOf="@+id/et_password"
+         />
+
+    <TextView
+        android:id="@+id/tv_login_error"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:selectAllOnFocus="true"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_password"
+        android:textSize="@dimen/text_12"
+        android:gravity="center_horizontal" />
+
+
+    <Button
+        android:id="@+id/btn_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:enabled="false"
+        android:text="@string/sign_in"
+        android:textSize="@dimen/text_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_error" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:enabled="false"
+        android:text="@string/register"
+        android:textSize="@dimen/text_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_in" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/et_email"
+        app:layout_constraintStart_toStartOf="@+id/et_email"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_in" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

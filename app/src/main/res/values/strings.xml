@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">Dream Your Trip</string>
+
+    <string name="username_email">Username/Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="noUsername">Insert username!</string>
+    <string name="noPassword">Insert password!</string>
+    <string name="auth_failed">Authentication failed, try one more time!</string>
+    <string name="email_send">Verification email was sent. Check your email.</string>
+    <string name="email_verify">Your email is not verified. Do it by clicking verify button!</string>
+    <string name="sign_out">Sign out</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="point_name">Point name</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="update">Update</string>
+    <string name="email">Email</string>
+    <string name="sign_in">Sign in</string>
+    <string name="points">Points</string>
+    <string name="trips">Trips</string>
+    <string name="title_location_permission">Location permission</string>
+    <string name="text_location_permission">Do you allow our app to get your location</string>
+    <string name="ok">OK</string>
+    <string name="show_on_map">Show</string>
+    <string name="delete">Delete</string>
+    <string name="new_trip">New trip</string>
+    <string name="trip_name">Trip name</string>
+    <string name="description">Description</string>
+    <string name="money_for_trip">Money for trip</string>
+    <string name="trip_stop_name">Trip stop name</string>
+    <string name="add">Add</string>
+    <string name="money_for_trip_stop">Money to spend</string>
+    <string name="choose_points">First choose any point!</string>
 </resources>

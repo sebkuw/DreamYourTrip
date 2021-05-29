@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp_15"
+    tools:context=".activities.TripsActivity">
+
+    <ScrollView
+        android:id="@+id/sv_trips_list"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="15dp">
+
+        <LinearLayout
+            android:id="@+id/ll_for_trips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_back_trips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_0"
+        android:layout_marginBottom="@dimen/dp_0"
+        android:text="@string/back"
+        android:textSize="@dimen/text_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_add_new_trip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_0"
+        android:layout_marginBottom="@dimen/dp_0"
+        android:text="@string/new_trip"
+        android:textSize="@dimen/text_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
